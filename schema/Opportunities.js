@@ -9,6 +9,26 @@ cube(`Opportunities`, {
     count: {
       type: `count`,
       drillMembers: [id, internalId, created]
+    },
+    maxMaxAmount: {
+      sql: `${CUBE}.compensation->'$.data.maxAmount'`,
+      type: 'max',
+      format: 'currency'
+    },
+    minMaxAmount: {
+      sql: `${CUBE}.compensation->'$.data.maxAmount'`,
+      type: 'min',
+      format: 'currency'
+    },
+    minMinAmount: {
+      sql: `${CUBE}.compensation->'$.data.minAmount'`,
+      type: 'min',
+      format: 'currency'
+    },
+    maxMinAmount: {
+      sql: `${CUBE}.compensation->'$.data.minAmount'`,
+      type: 'max',
+      format: 'currency'
     }
   },
   
@@ -24,8 +44,8 @@ cube(`Opportunities`, {
       type: `string`
     },
     
-    objetive: {
-      sql: `objetive`,
+    objective: {
+      sql: `objective`,
       type: `string`
     },
     
@@ -47,8 +67,18 @@ cube(`Opportunities`, {
     deadline: {
       sql: `deadline`,
       type: `time`
+    },
+    compensationCode: {
+      sql: `ifnull(${CUBE}.compensation->>'$.data.code', 'undefined')`,
+      type: 'string'
+    },
+    compensationCurrency: {
+      sql: `ifnull(${CUBE}.compensation->>'$.data.currency', 'undefined')`,
+      type: 'string'
+    },
+    compensationPeriodicity: {
+      sql: `ifnull(${CUBE}.compensation->>'$.data.periodicity', 'undefined')`,
+      type: 'string'
     }
-  },
-  
-  dataSource: `default`
+  }
 });
